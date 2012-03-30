@@ -28,7 +28,7 @@ How-to
 * Click "Post-actions"
 * Add a "New Run Script Action"
 * Select the target that corresponds to the Scheme in the "Provide build settings from..." dropdown
-* Copy and Paste the following code into the text field: source ${SRCROOT}/../tools/NWTestFlightUploader/NWTestFlightUploader.sh
+* Copy and Paste the following code into the text field: `source ${SRCROOT}/../tools/NWTestFlightUploader/NWTestFlightUploader.sh`
 * At minimum, supply `API_TOKEN` and `TEAM_TOKEN` (use the URLs to look them up in your TestFlight dashboard) either in the script or in a separate config.sh
 * Done! To try it out, build the Archive scheme. At the end of the process the TestFlight upload 'wizard' will start.
 
