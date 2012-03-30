@@ -12,23 +12,31 @@
 # - AppleScript dialogs for basic user interaction (upload yes/no, select code signing identity, enter release notes, )
 #
 #
+if [ -f ${SRCROOT}/../tools/NWTestFlightUploader/"config.sh" ]; then
+    source ${SRCROOT}/../tools/NWTestFlightUploader/config.sh
+fi
 # =====================================================================================================================
 # ***  BASIC CONFIGURATION:
 #
 # Find your API_TOKEN at: https://testflightapp.com/account/
-API_TOKEN=XXX
+# 
+# API_TOKEN=XXX 
 #
 # Find your TEAM_TOKEN at: https://testflightapp.com/dashboard/team/edit/
-TEAM_TOKEN=XXX
+# 
+# TEAM_TOKEN=XXX
 #
 # Distribution List names, comma separated (quoted) string, e.g. "DevTeam,Clients,BetaTesters":
-DISTRIBUTION_LISTS=DevTeam,Clients,BetaTesters
+# 
+# DISTRIBUTION_LISTS=DevTeam,Clients,BetaTesters
 #
 # Default selection of Distribution List(s), e.g. "DevTeam,Clients":
-DISTRIBUTION_LISTS_DEFAULT_SELECTION=DevTeam,Clients
+# 
+# DISTRIBUTION_LISTS_DEFAULT_SELECTION=DevTeam,Clients
 #
 # Default selection for the Notify team members dialog ("True" -> Notify team members, "False" -> Don't notify):
-DEFAULT_NOTIFY_VALUE="True"
+# 
+# DEFAULT_NOTIFY_VALUE="True"
 #
 # =====================================================================================================================
 # ***  OPTIONAL CONFIGURATION:
@@ -52,7 +60,8 @@ DEFAULT_NOTIFY_VALUE="True"
 #
 # Uncomment this line to enable loading Console.app
 #
-SHOW_DEBUG_CONSOLE="YES"
+# 
+# SHOW_DEBUG_CONSOLE="YES"
 #
 # Uncomment this line to disable opening the browser with the TestFlight dashboard at the end of the ride
 #
