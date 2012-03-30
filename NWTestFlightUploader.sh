@@ -71,6 +71,10 @@ fi
 #
 # DISABLE_OPEN_TESTFLIGHT_DASHBOARD="YES"
 #
+# Uncomment this line to skip the Uploaded to TestFlight! confirmation box
+#
+# SKIP_UPLOADED="YES"
+#
 # =====================================================================================================================
 
 # Do some existence checks for the build settings that this script depends on:
@@ -288,9 +292,11 @@ if [ "$?" -ne 0 ]; then
 	exit 1
 fi
 
-echo >> $LOG
-echo "Uploaded to TestFlight!" >> $LOG
-osascript -e "tell application \"Xcode\"" -e "display dialog \"Upload to TestFlight done!\" buttons {\"OK\"} default button \"OK\"" -e "end tell"
+if [ "$SKIP_UPLOADED" != "YES" ]; then
+    echo >> $LOG
+    echo "Uploaded to TestFlight!" >> $LOG
+    osascript -e "tell application \"Xcode\"" -e "display dialog \"Upload to TestFlight done!\" buttons {\"OK\"} default button \"OK\"" -e "end tell"
+fi
 
 if [ "$DISABLE_OPEN_TESTFLIGHT_DASHBOARD" != "YES" ]; then
 	echo >> $LOG
