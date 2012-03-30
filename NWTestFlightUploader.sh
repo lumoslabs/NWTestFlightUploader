@@ -41,6 +41,10 @@ fi
 # =====================================================================================================================
 # ***  OPTIONAL CONFIGURATION:
 #
+# Uncomment this line to skip the initial upload confirmation
+#
+# SKIP_UPLOAD_CONFIRMATION="YES"
+#
 # Uncomment this line to skip the resigning / re-provisioning steps:
 # The application is expected to be already provisioned and signed.
 #
@@ -85,17 +89,18 @@ LOG="/tmp/testflight.log"
 echo "Starting TestFlight Upload Process" > $LOG
 if [ "$SHOW_DEBUG_CONSOLE" = "YES" ]; then
 /usr/bin/open -a /Applications/Utilities/Console.app $LOG
-fi
+fi #SHOW_DEBUG_CONSOLE
 	
-# Ask if we need to proceed to upload to TestFlight using an AppleScript dialog in Xcode:
-SHOULD_UPLOAD=`osascript -e "tell application \"Xcode\"" -e "set noButton to \"No, Thanks\"" -e "set yesButton to \"Let's take off!\"" -e "set upload_dialog to display dialog \"Do you want to upload this build to TestFlight?\" buttons {noButton, yesButton} default button yesButton with icon 1" -e "set button to button returned of upload_dialog" -e "if button is equal to yesButton then" -e "return 1" -e "else" -e "return 0" -e "end if" -e "end tell"`
+if [ "$SKIP_UPLOAD_CONFIRMATION" != "YES" ]; then
+    # Ask if we need to proceed to upload to TestFlight using an AppleScript dialog in Xcode:
+    SHOULD_UPLOAD=`osascript -e "tell application \"Xcode\"" -e "set noButton to \"No, Thanks\"" -e "set yesButton to \"Let's take off!\"" -e "set upload_dialog to display dialog \"Do you want to upload this build to TestFlight?\" buttons {noButton, yesButton} default button yesButton with icon 1" -e "set button to button returned of upload_dialog" -e "if button is equal to yesButton then" -e "return 1" -e "else" -e "return 0" -e "end if" -e "end tell"`
 
-# Exit this script if the user indicated we shouldn't upload:
-if [ "$SHOULD_UPLOAD" = "0" ]; then
-	echo "User indicated not to upload this archive. Quitting." >> $LOG
-	exit 0
-fi #SHOULD_UPLOAD
-
+    # Exit this script if the user indicated we shouldn't upload:
+    if [ "$SHOULD_UPLOAD" = "0" ]; then
+        echo "User indicated not to upload this archive. Quitting." >> $LOG
+        exit 0
+    fi #SHOULD_UPLOAD
+fi #SKIP_UPLOAD_CONFIRMATION
 
 # Now onto selecting signing identity and provisioning profiles...
 if [ "$SKIP_RESIGNING_AND_REPROVISIONING" != "YES" ]; then
@@ -230,13 +235,15 @@ fi
 echo >> $LOG
 echo "Notify: $SHOULD_NOTIFY" >> $LOG
 
-# Final check before we start uploading:
-GO_UPLOAD=`osascript -e "tell application \"Xcode\"" -e "set noButton to \"Cancel\"" -e "set yesButton to \"OK\"" -e "set upload_dialog to display dialog \"We're about to upload now.\n\nThere will be a dialog at the end of the upload to confirm, but there will be no progress feedback.\" buttons {noButton, yesButton} default button yesButton with icon 1" -e "set button to button returned of upload_dialog" -e "if button is equal to yesButton then" -e "return 1" -e "else" -e "return 0" -e "end if" -e "end tell"`
-# Exit this script if the user indicated we shouldn't upload:
-if [ "$GO_UPLOAD" = "0" ]; then
-	echo "User cancelled." >> $LOG
-	exit 0
-fi #GO_UPLOAD
+if [ "$SKIP_UPLOAD_CONFIRMATION" != "YES" ]; then
+    # Final check before we start uploading:
+    GO_UPLOAD=`osascript -e "tell application \"Xcode\"" -e "set noButton to \"Cancel\"" -e "set yesButton to \"OK\"" -e "set upload_dialog to display dialog \"We're about to upload now.\n\nThere will be a dialog at the end of the upload to confirm, but there will be no progress feedback.\" buttons {noButton, yesButton} default button yesButton with icon 1" -e "set button to button returned of upload_dialog" -e "if button is equal to yesButton then" -e "return 1" -e "else" -e "return 0" -e "end if" -e "end tell"`
+    # Exit this script if the user indicated we shouldn't upload:
+    if [ "$GO_UPLOAD" = "0" ]; then
+        echo "User cancelled." >> $LOG
+        exit 0
+    fi #GO_UPLOAD
+fi #SKIP_UPLOAD_CONFIRMATION
 
 # Now onto creating the IPA...
 echo >> $LOG
