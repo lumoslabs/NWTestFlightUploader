@@ -28,8 +28,8 @@ How-to
 * Click "Post-actions"
 * Add a "New Run Script Action"
 * Select the target that corresponds to the Scheme in the "Provide build settings from..." dropdown
-* Copy & paste the contents of `NWTestFlightUploader.sh` into the text field
-* At minimum, supply `API_TOKEN` and `TEAM_TOKEN` (use the URLs to look them up in your TestFlight dashboard)
+* Copy and Paste the following code into the text field: source ${SRCROOT}/../tools/NWTestFlightUploader/NWTestFlightUploader.sh
+* At minimum, supply `API_TOKEN` and `TEAM_TOKEN` (use the URLs to look them up in your TestFlight dashboard) either in the script or in a separate config.sh
 * Done! To try it out, build the Archive scheme. At the end of the process the TestFlight upload 'wizard' will start.
 
 ![Xcode4 Scheme Editor - Adding TestFlight integration script](https://github.com/noodlewerk/NWTestFlightUploader/raw/master/screenshots/how-to-screenshot.png "Xcode4 TestFlight Integration Script")
